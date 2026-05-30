@@ -1,0 +1,17 @@
+[
+  {"id": "burning_blood", "name": "Горящая кровь", "description": "После боя +8 здоровья.", "effect": "heal_after_combat", "value": 8, "rarity": "starter"},
+  {"id": "ring_of_snake", "name": "Кольцо змеи", "description": "В начале боя +2 карты.", "effect": "extra_draw", "value": 2, "rarity": "common"},
+  {"id": "vajra", "name": "Ваджра", "description": "В начале боя +1 сила.", "effect": "start_strength", "value": 1, "rarity": "common"},
+  {"id": "anchor", "name": "Якорь", "description": "В начале боя +10 брони.", "effect": "start_block", "value": 10, "rarity": "common"},
+  {"id": "bag_of_marbles", "name": "Мешок шариков", "description": "В начале боя уязвимость 1 всем врагам.", "effect": "start_vulnerable", "value": 1, "rarity": "uncommon"},
+  {"id": "blood_vial", "name": "Флакон крови", "description": "В начале боя +2 здоровья.", "effect": "start_heal", "value": 2, "rarity": "common"},
+  {"id": "bronze_scales", "name": "Бронзовая чешуя", "description": "3 шипа — урон атакующим.", "effect": "thorns", "value": 3, "rarity": "common"},
+  {"id": "happy_flower", "name": "Счастливый цветок", "description": "Каждые 3 хода +1 энергия.", "effect": "energy_every_n", "value": 3, "rarity": "common"},
+  {"id": "war_paint", "name": "Боевая краска", "description": "Улучшает 2 навыка.", "effect": "upgrade_skills", "value": 2, "rarity": "common"},
+  {"id": "merchants_rug", "name": "Ковёр торговца", "description": "Скидка 20% в лавке.", "effect": "shop_discount", "value": 20, "rarity": "uncommon"},
+  {"id": "omamori", "name": "Омамори", "description": "Отменяет 2 проклятия.", "effect": "negate_curses", "value": 2, "rarity": "uncommon"},
+  {"id": "toxic_egg", "name": "Токсичное яйцо", "description": "Навыки улучшаются при получении.", "effect": "auto_upgrade_skills", "value": 1, "rarity": "rare"},
+  {"id": "frozen_egg", "name": "Ледяное яйцо", "description": "Силы улучшаются при получении.", "effect": "auto_upgrade_powers", "value": 1, "rarity": "rare"},
+  {"id": "molten_egg", "name": "Раскалённое яйцо", "description": "Атаки улучшаются при получении.", "effect": "auto_upgrade_attacks", "value": 1, "rarity": "rare"},
+  {"id": "philosophers_stone", "name": "Философский камень", "description": "+1 энергия. Враги +1 сила.", "effect": "extra_energy", "value": 1, "rarity": "rare"}
+]

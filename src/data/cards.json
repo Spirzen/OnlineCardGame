@@ -1,0 +1,942 @@
+[
+  {
+    "id": "strike",
+    "name": "Удар",
+    "type": "attack",
+    "cost": 1,
+    "value": 6,
+    "description": "Классика жанра. Прямо в морду.",
+    "rarity": "basic"
+  },
+  {
+    "id": "strike",
+    "name": "Удар",
+    "type": "attack",
+    "cost": 1,
+    "value": 6,
+    "description": "Классика жанра. Прямо в морду.",
+    "rarity": "basic"
+  },
+  {
+    "id": "strike",
+    "name": "Удар",
+    "type": "attack",
+    "cost": 1,
+    "value": 6,
+    "description": "Классика жанра. Прямо в морду.",
+    "rarity": "basic"
+  },
+  {
+    "id": "strike",
+    "name": "Удар",
+    "type": "attack",
+    "cost": 1,
+    "value": 6,
+    "description": "Классика жанра. Прямо в морду.",
+    "rarity": "basic"
+  },
+  {
+    "id": "defend",
+    "name": "Защита",
+    "type": "block",
+    "cost": 1,
+    "value": 5,
+    "description": "Не мешай — я занят неуязвимостью.",
+    "rarity": "basic"
+  },
+  {
+    "id": "defend",
+    "name": "Защита",
+    "type": "block",
+    "cost": 1,
+    "value": 5,
+    "description": "Не мешай — я занят неуязвимостью.",
+    "rarity": "basic"
+  },
+  {
+    "id": "defend",
+    "name": "Защита",
+    "type": "block",
+    "cost": 1,
+    "value": 5,
+    "description": "Не мешай — я занят неуязвимостью.",
+    "rarity": "basic"
+  },
+  {
+    "id": "defend",
+    "name": "Защита",
+    "type": "block",
+    "cost": 1,
+    "value": 5,
+    "description": "Не мешай — я занят неуязвимостью.",
+    "rarity": "basic"
+  },
+  {
+    "id": "bash",
+    "name": "Сокрушение",
+    "type": "attack",
+    "cost": 2,
+    "value": 8,
+    "description": "Говорят, помогает в переговорах. Громко.",
+    "rarity": "common",
+    "effect": "vulnerable",
+    "effect_value": 2
+  },
+  {
+    "id": "iron_wave",
+    "name": "Железная волна",
+    "type": "attack",
+    "cost": 1,
+    "value": 5,
+    "description": "Ударил — и сразу пожалел. Себя.",
+    "rarity": "common",
+    "block": 5
+  },
+  {
+    "id": "cleave",
+    "name": "Рассечение",
+    "type": "attack",
+    "cost": 1,
+    "value": 8,
+    "description": "Почему одним, когда можно всем?",
+    "rarity": "common",
+    "aoe": true
+  },
+  {
+    "id": "shrug_it_off",
+    "name": "Пофиг",
+    "type": "block",
+    "cost": 1,
+    "value": 8,
+    "description": "«Да ладно, ерунда». И ещё карта.",
+    "rarity": "common",
+    "draw": 1
+  },
+  {
+    "id": "true_grit",
+    "name": "Стойкость",
+    "type": "block",
+    "cost": 1,
+    "value": 7,
+    "description": "Слово «терпи» в словаре героя.",
+    "rarity": "common"
+  },
+  {
+    "id": "inflame",
+    "name": "Пламя",
+    "type": "buff",
+    "cost": 1,
+    "value": 2,
+    "description": "Внутренний пожар. Страховка не покрывает.",
+    "rarity": "uncommon",
+    "effect": "strength",
+    "effect_value": 2
+  },
+  {
+    "id": "battle_trance",
+    "name": "Боевой транс",
+    "type": "draw",
+    "cost": 0,
+    "value": 3,
+    "description": "ADHD, но полезный.",
+    "rarity": "uncommon",
+    "draw": 3
+  },
+  {
+    "id": "offering",
+    "name": "Жертва",
+    "type": "draw",
+    "cost": 0,
+    "value": 2,
+    "description": "Кровь за ману. Сделка честная.",
+    "rarity": "rare",
+    "draw": 3,
+    "energy_gain": 2,
+    "self_damage": 6
+  },
+  {
+    "id": "heavy_blade",
+    "name": "Тяжёлый клинок",
+    "type": "attack",
+    "cost": 2,
+    "value": 14,
+    "description": "С гравитацией мы — лучшие друзья.",
+    "rarity": "uncommon",
+    "strength_mult": 3
+  },
+  {
+    "id": "uppercut",
+    "name": "Апперкот",
+    "type": "attack",
+    "cost": 2,
+    "value": 13,
+    "description": "Подбородок и гордость — отдельно.",
+    "rarity": "uncommon",
+    "effect": "vulnerable",
+    "effect_value": 1,
+    "effect2": "weak",
+    "effect2_value": 1
+  },
+  {
+    "id": "pommel_strike",
+    "name": "Навершие",
+    "type": "attack",
+    "cost": 1,
+    "value": 9,
+    "description": "Удар рукоятью и мудрость из колоды.",
+    "rarity": "common",
+    "draw": 1
+  },
+  {
+    "id": "shockwave",
+    "name": "Ударная волна",
+    "type": "debuff",
+    "cost": 2,
+    "value": 0,
+    "description": "Микроволновка на максимальной мощности.",
+    "rarity": "uncommon",
+    "aoe": true,
+    "effect": "vulnerable",
+    "effect_value": 3,
+    "effect2": "weak",
+    "effect2_value": 3
+  },
+  {
+    "id": "ghostly_armor",
+    "name": "Призрачная броня",
+    "type": "block",
+    "cost": 1,
+    "value": 10,
+    "description": "Броня из «я просто pretend».",
+    "rarity": "common"
+  },
+  {
+    "id": "metallicize",
+    "name": "Металлизация",
+    "type": "buff",
+    "cost": 1,
+    "value": 3,
+    "description": "Каждый вечер — ещё чуть-чуть стали.",
+    "rarity": "uncommon",
+    "effect": "metallicize",
+    "effect_value": 3
+  },
+  {
+    "id": "bludgeon",
+    "name": "Дубина",
+    "type": "attack",
+    "cost": 3,
+    "value": 32,
+    "description": "Модерация — для слабаков.",
+    "rarity": "rare"
+  },
+  {
+    "id": "reaper",
+    "name": "Жнец",
+    "type": "attack",
+    "cost": 2,
+    "value": 4,
+    "description": "Фермерство, но мрачное.",
+    "rarity": "rare",
+    "aoe": true,
+    "lifesteal": true
+  },
+  {
+    "id": "fireball",
+    "name": "Огненный шар",
+    "type": "attack",
+    "cost": 4,
+    "value": 20,
+    "description": "DDoS по одному адресу.",
+    "rarity": "rare"
+  },
+  {
+    "id": "shield_bash",
+    "name": "Удар щитом",
+    "type": "attack",
+    "cost": 2,
+    "value": 12,
+    "description": "Щит как аргумент в дискуссии.",
+    "rarity": "common",
+    "block": 8
+  },
+  {
+    "id": "power_through",
+    "name": "Прорыв",
+    "type": "block",
+    "cost": 1,
+    "value": 15,
+    "description": "«Я справлюсь» — famous last words.",
+    "rarity": "uncommon"
+  },
+  {
+    "id": "wild_strike",
+    "name": "Дикий удар",
+    "type": "attack",
+    "cost": 1,
+    "value": 12,
+    "description": "RNG — мой личный тренер.",
+    "rarity": "common"
+  },
+  {
+    "id": "thunder_clap",
+    "name": "Гром",
+    "type": "attack",
+    "cost": 1,
+    "value": 4,
+    "description": "Хлопок такой громкий, что стыдно всем.",
+    "rarity": "common",
+    "aoe": true,
+    "effect": "vulnerable",
+    "effect_value": 1
+  },
+  {
+    "id": "spot_weakness",
+    "name": "Слабое место",
+    "type": "buff",
+    "cost": 1,
+    "value": 3,
+    "description": "Профессиональный критик в бою.",
+    "rarity": "uncommon",
+    "effect": "strength",
+    "effect_value": 3
+  },
+  {
+    "id": "planning",
+    "name": "Планирование",
+    "type": "block",
+    "cost": 1,
+    "value": 5,
+    "description": "To-do list на завтра, но уже сегодня.",
+    "rarity": "common",
+    "bonuses": [
+      {
+        "id": "end_turn_draw",
+        "value": 2,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "delayed_strike",
+    "name": "Отложенный удар",
+    "type": "attack",
+    "cost": 1,
+    "value": 7,
+    "description": "Procrastination, но с уроном.",
+    "rarity": "common",
+    "bonuses": [
+      {
+        "id": "end_turn_draw",
+        "value": 1,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "night_watch",
+    "name": "Ночной дозор",
+    "type": "block",
+    "cost": 2,
+    "value": 8,
+    "description": "Кофе и бессонница в форме карты.",
+    "rarity": "uncommon",
+    "bonuses": [
+      {
+        "id": "end_turn_block",
+        "value": 4,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "bandage",
+    "name": "Перевязка",
+    "type": "block",
+    "cost": 1,
+    "value": 4,
+    "description": "Пластырь размером с оптимизм.",
+    "rarity": "common",
+    "bonuses": [
+      {
+        "id": "end_turn_heal",
+        "value": 3,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "reserve",
+    "name": "Запас сил",
+    "type": "buff",
+    "cost": 1,
+    "value": 0,
+    "description": "Энергия в рассрочку — без процентов.",
+    "rarity": "uncommon",
+    "bonuses": [
+      {
+        "id": "next_turn_energy",
+        "value": 2,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "stunning_blow",
+    "name": "Оглушающий удар",
+    "type": "attack",
+    "cost": 2,
+    "value": 6,
+    "description": "Ctrl+Alt+Delete для врага.",
+    "rarity": "uncommon",
+    "bonuses": [
+      {
+        "id": "stun",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "frost_spike",
+    "name": "Морозный шип",
+    "type": "attack",
+    "cost": 1,
+    "value": 4,
+    "description": "Заморозить счета... то есть броню.",
+    "rarity": "uncommon",
+    "bonuses": [
+      {
+        "id": "freeze",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "poison_blade",
+    "name": "Отравленное лезвие",
+    "type": "attack",
+    "cost": 1,
+    "value": 5,
+    "description": "«Это organic poison», успокаиваешь ты.",
+    "rarity": "common",
+    "bonuses": [
+      {
+        "id": "poison",
+        "value": 3
+      }
+    ]
+  },
+  {
+    "id": "bloody_slash",
+    "name": "Кровавая резня",
+    "type": "attack",
+    "cost": 2,
+    "value": 8,
+    "description": "Режиссёр slasher-ов одобряет.",
+    "rarity": "common",
+    "bonuses": [
+      {
+        "id": "bleed",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "ignite",
+    "name": "Поджог",
+    "type": "attack",
+    "cost": 1,
+    "value": 3,
+    "description": "BBQ с доставкой до врага.",
+    "rarity": "common",
+    "bonuses": [
+      {
+        "id": "burn",
+        "value": 4
+      }
+    ]
+  },
+  {
+    "id": "hunters_mark",
+    "name": "Метка охотника",
+    "type": "attack",
+    "cost": 1,
+    "value": 6,
+    "description": "GPS-трекер на цели.",
+    "rarity": "uncommon",
+    "bonuses": [
+      {
+        "id": "mark",
+        "value": 5
+      }
+    ]
+  },
+  {
+    "id": "sand_toss",
+    "name": "Песок в глаза",
+    "type": "debuff",
+    "cost": 1,
+    "value": 0,
+    "description": "Песка в глаза — вечная классика.",
+    "rarity": "common",
+    "bonuses": [
+      {
+        "id": "blind",
+        "value": 1
+      }
+    ]
+  },
+  {
+    "id": "slow_hex",
+    "name": "Замедление",
+    "type": "debuff",
+    "cost": 1,
+    "value": 0,
+    "description": "Интернет врага переключили на 2G.",
+    "rarity": "common",
+    "bonuses": [
+      {
+        "id": "slow",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "id": "disarm",
+    "name": "Разоружение",
+    "type": "debuff",
+    "cost": 1,
+    "value": 0,
+    "description": "«Отдай меч, это для моего блога».",
+    "rarity": "uncommon",
+    "bonuses": [
+      {
+        "id": "silence",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "id": "steal_armor",
+    "name": "Кража брони",
+    "type": "attack",
+    "cost": 1,
+    "value": 4,
+    "description": "Защита? Теперь моя.",
+    "rarity": "uncommon",
+    "bonuses": [
+      {
+        "id": "steal_block",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "id": "steal_power",
+    "name": "Похищение силы",
+    "type": "attack",
+    "cost": 2,
+    "value": 5,
+    "description": "Качаешь врага... в свою пользу.",
+    "rarity": "uncommon",
+    "bonuses": [
+      {
+        "id": "steal_strength",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "id": "shatter_shield",
+    "name": "Разбить щит",
+    "type": "debuff",
+    "cost": 0,
+    "value": 0,
+    "description": "Разбить щит одной фразой «ладно».",
+    "rarity": "common",
+    "bonuses": [
+      {
+        "id": "clear_block",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "id": "execute",
+    "name": "Казнь",
+    "type": "attack",
+    "cost": 2,
+    "value": 10,
+    "description": "Доводить до логического... финала.",
+    "rarity": "rare",
+    "bonuses": [
+      {
+        "id": "execute",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "id": "piercing_strike",
+    "name": "Пробивной удар",
+    "type": "attack",
+    "cost": 2,
+    "value": 6,
+    "description": "Броня — social construct.",
+    "rarity": "uncommon",
+    "bonuses": [
+      {
+        "id": "pierce",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "id": "double_lunge",
+    "name": "Двойной выпад",
+    "type": "attack",
+    "cost": 1,
+    "value": 8,
+    "description": "Два раза — для уверенности.",
+    "rarity": "common",
+    "bonuses": [
+      {
+        "id": "double_hit",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "id": "gamble_strike",
+    "name": "Азартный удар",
+    "type": "attack",
+    "cost": 1,
+    "value": 7,
+    "description": "Казино? Нет, просто вторник.",
+    "rarity": "common",
+    "bonuses": [
+      {
+        "id": "random_hit",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "id": "thorn_shield",
+    "name": "Шипастый щит",
+    "type": "block",
+    "cost": 1,
+    "value": 7,
+    "description": "Обнял — получил invoice.",
+    "rarity": "uncommon",
+    "bonuses": [
+      {
+        "id": "thorns",
+        "value": 3,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "agility",
+    "name": "Ловкость",
+    "type": "buff",
+    "cost": 1,
+    "value": 0,
+    "description": "Ловкость уровня «где моя карта?»",
+    "rarity": "uncommon",
+    "bonuses": [
+      {
+        "id": "dexterity",
+        "value": 2,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "regeneration",
+    "name": "Регенерация",
+    "type": "buff",
+    "cost": 1,
+    "value": 0,
+    "description": "Регенерация как подписка auto-renew.",
+    "rarity": "uncommon",
+    "bonuses": [
+      {
+        "id": "regen",
+        "value": 2,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "holy_ward",
+    "name": "Святая защита",
+    "type": "buff",
+    "cost": 1,
+    "value": 0,
+    "description": "Antivirus для дебаффов.",
+    "rarity": "rare",
+    "bonuses": [
+      {
+        "id": "immune",
+        "value": 1,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "mirror_shield",
+    "name": "Зеркальный щит",
+    "type": "buff",
+    "cost": 2,
+    "value": 0,
+    "description": "Отражение, но toxic.",
+    "rarity": "rare",
+    "bonuses": [
+      {
+        "id": "reflect",
+        "value": 4,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "berserk_rage",
+    "name": "Ярость берсерка",
+    "type": "attack",
+    "cost": 1,
+    "value": 8,
+    "description": "Чем больнее — тем злее. Логично.",
+    "rarity": "uncommon",
+    "bonuses": [
+      {
+        "id": "rage",
+        "value": 2,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "channel_mana",
+    "name": "Накопление",
+    "type": "buff",
+    "cost": 0,
+    "value": 0,
+    "description": "Копилка энергии без комиссии.",
+    "rarity": "uncommon",
+    "bonuses": [
+      {
+        "id": "channel",
+        "value": 2,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "echo_strike",
+    "name": "Эхо-удар",
+    "type": "attack",
+    "cost": 2,
+    "value": 5,
+    "description": "Повтор — мать учения и увечий.",
+    "rarity": "rare",
+    "bonuses": [
+      {
+        "id": "echo",
+        "value": 0
+      }
+    ]
+  },
+  {
+    "id": "sacrifice_armor",
+    "name": "Жертва за щит",
+    "type": "block",
+    "cost": 1,
+    "value": 4,
+    "description": "Сжёг колоду — получил броню. Worth it?",
+    "rarity": "common",
+    "discard_cost": 1,
+    "discard_reward": "discard_block",
+    "discard_reward_value": 10
+  },
+  {
+    "id": "sacrifice_blade",
+    "name": "Жертва за удар",
+    "type": "attack",
+    "cost": 1,
+    "value": 3,
+    "description": "Recycling карт с прибылью.",
+    "rarity": "common",
+    "discard_cost": 1,
+    "discard_reward": "discard_damage",
+    "discard_reward_value": 8
+  },
+  {
+    "id": "sacrifice_insight",
+    "name": "Жертва за знание",
+    "type": "draw",
+    "cost": 0,
+    "value": 0,
+    "description": "Меньше карт — больше enlightenment.",
+    "rarity": "common",
+    "discard_cost": 1,
+    "discard_reward": "discard_draw",
+    "discard_reward_value": 2
+  },
+  {
+    "id": "sacrifice_fury",
+    "name": "Жертва за ярость",
+    "type": "buff",
+    "cost": 0,
+    "value": 0,
+    "description": "Сжигаем bridges, строим muscles.",
+    "rarity": "uncommon",
+    "discard_cost": 1,
+    "discard_reward": "discard_strength",
+    "discard_reward_value": 3
+  },
+  {
+    "id": "sacrifice_vigor",
+    "name": "Жертва за энергию",
+    "type": "buff",
+    "cost": 0,
+    "value": 0,
+    "description": "Trade-in программа для карт.",
+    "rarity": "uncommon",
+    "discard_cost": 1,
+    "discard_reward": "discard_energy",
+    "discard_reward_value": 2
+  },
+  {
+    "id": "sacrifice_life",
+    "name": "Жертва за жизнь",
+    "type": "block",
+    "cost": 1,
+    "value": 2,
+    "description": "HP за сброс — economics 101.",
+    "rarity": "common",
+    "discard_cost": 1,
+    "discard_reward": "discard_heal",
+    "discard_reward_value": 6
+  },
+  {
+    "id": "vampiric_bite",
+    "name": "Вампирский укус",
+    "type": "attack",
+    "cost": 2,
+    "value": 6,
+    "description": "Вампирский режим: ON.",
+    "rarity": "uncommon",
+    "lifesteal": true
+  },
+  {
+    "id": "healing_light",
+    "name": "Исцеляющий свет",
+    "type": "buff",
+    "cost": 1,
+    "value": 0,
+    "description": "Светлее только настроение.",
+    "rarity": "common",
+    "bonuses": [
+      {
+        "id": "heal",
+        "value": 8,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "wave_of_weakness",
+    "name": "Волна слабости",
+    "type": "debuff",
+    "cost": 2,
+    "value": 0,
+    "description": "Коллективная усталость по понедельникам.",
+    "rarity": "uncommon",
+    "aoe": true,
+    "bonuses": [
+      {
+        "id": "weaken_all",
+        "value": 2,
+        "target": "all_enemies"
+      }
+    ]
+  },
+  {
+    "id": "thunder_cage",
+    "name": "Громовая клетка",
+    "type": "debuff",
+    "cost": 3,
+    "value": 0,
+    "description": "VIP-клетка без звёзд на TripAdvisor.",
+    "rarity": "rare",
+    "aoe": true,
+    "bonuses": [
+      {
+        "id": "stun",
+        "value": 1,
+        "target": "all_enemies"
+      }
+    ]
+  },
+  {
+    "id": "absorption",
+    "name": "Поглощение",
+    "type": "attack",
+    "cost": 2,
+    "value": 6,
+    "description": "Поглощение на MAX — как Wi-Fi сигнал.",
+    "rarity": "rare",
+    "bonuses": [
+      {
+        "id": "heal",
+        "value": 3,
+        "target": "self"
+      },
+      {
+        "id": "end_turn_draw",
+        "value": 1,
+        "target": "self"
+      }
+    ]
+  },
+  {
+    "id": "mass_vulnerability",
+    "name": "Массовая уязвимость",
+    "type": "debuff",
+    "cost": 2,
+    "value": 0,
+    "description": "Public humiliation для всех.",
+    "rarity": "uncommon",
+    "aoe": true,
+    "bonuses": [
+      {
+        "id": "vuln_all",
+        "value": 2,
+        "target": "all_enemies"
+      }
+    ]
+  },
+  {
+    "id": "tactical_retreat",
+    "name": "Тактический отход",
+    "type": "block",
+    "cost": 1,
+    "value": 6,
+    "description": "Отступление стратегическое, не трусость.",
+    "rarity": "uncommon",
+    "bonuses": [
+      {
+        "id": "end_turn_draw",
+        "value": 1,
+        "target": "self"
+      },
+      {
+        "id": "end_turn_block",
+        "value": 2,
+        "target": "self"
+      }
+    ]
+  }
+]

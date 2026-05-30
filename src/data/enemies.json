@@ -1,0 +1,11 @@
+{
+  "cultist": {"name": "Культист", "hp": 38, "intent_pattern": ["buff", "attack", "attack"], "attack_damage": 5, "buff_value": 2, "description": "Тёмный культист."},
+  "jaw_worm": {"name": "Челюстной червь", "hp": 36, "intent_pattern": ["attack", "attack", "block_attack"], "attack_damage": 8, "block_attack_damage": 5, "block_value": 5, "description": "Подземный червь."},
+  "louse": {"name": "Красная вошь", "hp": 12, "intent_pattern": ["attack", "attack", "buff"], "attack_damage": 4, "buff_value": 2, "description": "Мелкий паразит."},
+  "slime": {"name": "Кислотная слизь", "hp": 24, "intent_pattern": ["attack", "debuff", "attack"], "attack_damage": 6, "debuff_value": 1, "description": "Едкая слизь."},
+  "gremlin_nob": {"name": "Гремлин-вожак", "hp": 72, "intent_pattern": ["buff", "attack", "attack", "attack"], "attack_damage": 12, "buff_value": 2, "description": "Большой гремлин."},
+  "sentry": {"name": "Часовой", "hp": 34, "intent_pattern": ["attack", "debuff", "attack"], "attack_damage": 8, "debuff_value": 2, "description": "Древний страж."},
+  "hexaghost": {"name": "Гексагhost", "hp": 220, "intent_pattern": ["attack", "attack", "attack", "special"], "attack_damage": 6, "special_damage": 10, "description": "Огненный дух."},
+  "slime_boss": {"name": "Король слизей", "hp": 120, "intent_pattern": ["attack", "special", "attack", "special"], "attack_damage": 10, "special_damage": 14, "description": "Повелитель слизей."},
+  "guardian": {"name": "Страж", "hp": 200, "intent_pattern": ["block", "attack", "block", "special"], "attack_damage": 26, "block_value": 25, "special_damage": 16, "description": "Каменный страж."}
+}
