@@ -3,11 +3,8 @@ import {
   INTENT_ATTACK, INTENT_BLOCK, INTENT_BUFF, INTENT_DEBUFF,
   INTENT_SPECIAL, INTENT_BLOCK_ATTACK,
 } from '../game/enemy';
-
-const ENEMY_SPRITES: Record<string, string> = {
-  cultist: '🧙', jaw_worm: '🪱', louse: '🐛', slime: '🟢',
-  gremlin_nob: '👹', sentry: '🗿', hexaghost: '👻', slime_boss: '👑', guardian: '🛡',
-};
+import { ENEMY_SPRITES } from '../game/epicTheme';
+import { Tooltip } from './Tooltip';
 
 const INTENT_ICONS: Record<string, string> = {
   [INTENT_ATTACK]: '⚔', [INTENT_BLOCK]: '🛡', [INTENT_BUFF]: '💪',
@@ -36,11 +33,13 @@ export function EnemyPanel({ enemy, selected, targetable, onClick, hitFlash }: E
   const hpPct = (enemy.hp / enemy.maxHp) * 100;
   const sprite = ENEMY_SPRITES[enemy.id] ?? '👾';
   const intentCls = INTENT_CLASS[enemy.currentIntent] ?? '';
+  const isBoss = enemy.id === 'shulgen';
 
-  return (
+  const panel = (
     <div
       className={[
         'enemy-panel panel',
+        isBoss ? 'enemy-panel--boss' : '',
         selected ? 'enemy-panel--selected' : '',
         targetable ? 'enemy-panel--targetable' : '',
         hitFlash ? 'enemy-panel--hit' : '',
@@ -65,5 +64,13 @@ export function EnemyPanel({ enemy, selected, targetable, onClick, hitFlash }: E
       {enemy.vulnerable > 0 && <span className="status-tag status-tag--vuln">Уязв. {enemy.vulnerable}</span>}
       {enemy.weak > 0 && <span className="status-tag status-tag--weak">Слаб. {enemy.weak}</span>}
     </div>
+  );
+
+  if (!enemy.description) return panel;
+
+  return (
+    <Tooltip content={enemy.description} wide placement="top">
+      {panel}
+    </Tooltip>
   );
 }

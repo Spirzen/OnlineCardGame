@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useGame } from '../hooks/useGame';
-import { CLASSES } from '../game/classes';
+import { CLASSES, getClassName } from '../game/classes';
 import { LOCALE } from '../game/locale';
 import { sfx } from '../game/sfx';
 import { CardView } from './CardView';
@@ -13,6 +13,7 @@ export function ClassSelectScreen() {
   return (
     <div className="screen center-content">
       <h2 className="title-display">{LOCALE.CLASS_TITLE}</h2>
+      <p className="subtitle class-select-sub">{LOCALE.CLASS_SUB}</p>
       {run.isDailyRun && <p className="subtitle">{LOCALE.DAILY_SEED}: {run.runSeed}</p>}
       <div className="class-grid">
         {CLASSES.map((cls) => (
@@ -27,6 +28,7 @@ export function ClassSelectScreen() {
             <div className="class-card__icon">{cls.icon}</div>
             <h3>{cls.name}</h3>
             <p>{cls.description}</p>
+            <blockquote className="class-card__quote">{cls.quote}</blockquote>
             <div className="class-card__stats">❤ {cls.hp} · ⚡ {cls.energy} · 🪙 {cls.gold}</div>
           </button>
         ))}
@@ -83,7 +85,7 @@ export function StatsScreen() {
               <span>#{i + 1}</span>
               <span>{LOCALE.MAP_FLOOR} {e.floor}</span>
               <span>{e.kills} ⚔</span>
-              <span>{e.classId}</span>
+              <span>{getClassName(e.classId)}</span>
               {e.daily && <span className="badge-daily">daily</span>}
             </div>
           ))}

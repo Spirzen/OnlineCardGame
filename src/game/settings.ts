@@ -22,12 +22,12 @@ export const DRAW_PER_TURN = 5;
 export const MAX_HAND = 10;
 
 export const CARD_TYPE_COLORS: Record<string, string> = {
-  attack: '#c83737',
-  block: '#3770c8',
-  buff: '#c89628',
-  debuff: '#8232b4',
-  draw: '#37aa78',
-  creature: '#b47832',
+  attack: '#c84828',
+  block: '#3878b8',
+  buff: '#c89020',
+  debuff: '#7040a0',
+  draw: '#389868',
+  creature: '#a86828',
 };
 
 export const RARITY_COLORS: Record<string, string> = {
@@ -50,10 +50,10 @@ export const NODE_COLORS: Record<string, string> = {
 
 export const NODE_ICONS: Record<string, string> = {
   combat: '⚔',
-  elite: '💀',
-  boss: '👑',
+  elite: '👹',
+  boss: '🐉',
   rest: '🔥',
-  shop: '🛒',
+  shop: '🏕',
   treasure: '💎',
-  event: '❓',
+  event: '📜',
 };

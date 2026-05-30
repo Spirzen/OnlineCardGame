@@ -5,7 +5,7 @@ export function SiteHeader() {
     <header className="site-header">
       <a
         className="site-header__link"
-        href="https://spirzen.ru"
+        href="https://skazki.rustih.ru/ural-batyr/"
         target="_blank"
         rel="noopener noreferrer"
       >

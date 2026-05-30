@@ -1,6 +1,7 @@
 import { useGame } from '../hooks/useGame';
 import { LOCALE } from '../game/locale';
 import { NODE_COLORS, NODE_ICONS } from '../game/settings';
+import { getActLabel, getActLore } from '../game/acts';
 import { PlayerHUD, RelicBar } from './PlayerHUD';
 import type { MapNode } from '../game/map';
 
@@ -31,7 +32,11 @@ export function MapScreen() {
   return (
     <div className="screen">
       <div className="screen-header">
-        <h2>{LOCALE.MAP_FLOOR} {floor} / {total}</h2>
+        <div>
+          <p className="map-act-label">{getActLabel(floor)}</p>
+          <p className="map-act-lore">{getActLore(floor)}</p>
+          <h2>{LOCALE.MAP_FLOOR} {floor} / {total}</h2>
+        </div>
         <div className="header-actions">
           <button className="btn btn--ghost btn--sm" onClick={() => dispatch({ type: 'TOGGLE_DECK', open: true })}>
             🃏 {LOCALE.DECK_VIEW}

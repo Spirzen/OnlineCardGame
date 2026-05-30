@@ -1,11 +1,160 @@
 {
-  "cultist": {"name": "Культист", "hp": 38, "intent_pattern": ["buff", "attack", "attack"], "attack_damage": 5, "buff_value": 2, "description": "Тёмный культист."},
-  "jaw_worm": {"name": "Челюстной червь", "hp": 36, "intent_pattern": ["attack", "attack", "block_attack"], "attack_damage": 8, "block_attack_damage": 5, "block_value": 5, "description": "Подземный червь."},
-  "louse": {"name": "Красная вошь", "hp": 12, "intent_pattern": ["attack", "attack", "buff"], "attack_damage": 4, "buff_value": 2, "description": "Мелкий паразит."},
-  "slime": {"name": "Кислотная слизь", "hp": 24, "intent_pattern": ["attack", "debuff", "attack"], "attack_damage": 6, "debuff_value": 1, "description": "Едкая слизь."},
-  "gremlin_nob": {"name": "Гремлин-вожак", "hp": 72, "intent_pattern": ["buff", "attack", "attack", "attack"], "attack_damage": 12, "buff_value": 2, "description": "Большой гремлин."},
-  "sentry": {"name": "Часовой", "hp": 34, "intent_pattern": ["attack", "debuff", "attack"], "attack_damage": 8, "debuff_value": 2, "description": "Древний страж."},
-  "hexaghost": {"name": "Гексагhost", "hp": 220, "intent_pattern": ["attack", "attack", "attack", "special"], "attack_damage": 6, "special_damage": 10, "description": "Огненный дух."},
-  "slime_boss": {"name": "Король слизей", "hp": 120, "intent_pattern": ["attack", "special", "attack", "special"], "attack_damage": 10, "special_damage": 14, "description": "Повелитель слизей."},
-  "guardian": {"name": "Страж", "hp": 200, "intent_pattern": ["block", "attack", "block", "special"], "attack_damage": 26, "block_value": 25, "special_damage": 16, "description": "Каменный страж."}
+  "cultist": {
+    "name": "Приспешник Шульгена",
+    "hp": 38,
+    "intent_pattern": [
+      "buff",
+      "attack",
+      "attack"
+    ],
+    "attack_damage": 5,
+    "buff_value": 2,
+    "description": "Приспешник Шульгена — тот, кто услышал зов крови и выбрал сторону брата-отступника. Он не див от рождения, но служит тьме, как служил Шульген раковине с кровью. Баффует себя, бьёт дважды — верный ученик предательства. В эпосе такие люди редки, но опасны: они знают слабые места семьи."
+  },
+  "jaw_worm": {
+    "name": "Подземный змей",
+    "hp": 36,
+    "intent_pattern": [
+      "attack",
+      "attack",
+      "block_attack"
+    ],
+    "attack_damage": 8,
+    "block_attack_damage": 5,
+    "block_value": 5,
+    "description": "Подземный змей — тварь из глубин, где, по словам Янбирде, обитает Смерть. Он ползёт в царство дивов и вспоминает Уралу, что змеи могут быть и знаком, и врагом. Удар и блок в одном движении — коварство без лица."
+  },
+  "louse": {
+    "name": "Болотная коза",
+    "hp": 12,
+    "intent_pattern": [
+      "attack",
+      "attack",
+      "buff"
+    ],
+    "attack_damage": 4,
+    "buff_value": 2,
+    "description": "Болотная коза — мелкая, назойливая, как сомнение на тропе. Не герой эпоса, но часть степи: без мелких врагов не учишься вниманию. Быстрые удары, рост силы — болото живёт своей жизнью."
+  },
+  "slime": {
+    "name": "Ядовитая слизь",
+    "hp": 24,
+    "intent_pattern": [
+      "attack",
+      "debuff",
+      "attack"
+    ],
+    "attack_damage": 6,
+    "debuff_value": 1,
+    "description": "Ядовитая слизь из царства дивов — остаток тех времён, когда вода покрыла землю после гнева великанов. Ослабляет и бьёт, как болезнь, что приходит без звука. Урал знал: большие подвиги начинаются с маленьких опасностей."
+  },
+  "gremlin_nob": {
+    "name": "Главарь дивов",
+    "hp": 72,
+    "intent_pattern": [
+      "buff",
+      "attack",
+      "attack",
+      "attack"
+    ],
+    "attack_damage": 12,
+    "buff_value": 2,
+    "description": "Главарь дивов — вожак, чья сила не в одном ударе, а в орде. Он буфует себя и обрушивает град ударов, как град камней с Уральских скал. Встреча с ним — элита похода: здесь решается, готов ли батыр к Шульгену."
+  },
+  "sentry": {
+    "name": "Часовой Катилу",
+    "hp": 34,
+    "intent_pattern": [
+      "attack",
+      "debuff",
+      "attack"
+    ],
+    "attack_damage": 8,
+    "debuff_value": 2,
+    "description": "Часовой Катилу — страж ворот злого царя, что требовал жертв. Он бьёт и накладывает уязвимость, словно напоминая: перед троном тьмы каждый слаб. Эпос помнит Катилу как воплощение жадности к чужой жизни."
+  },
+  "ulem_shadow": {
+    "name": "Тень Улема",
+    "hp": 58,
+    "intent_pattern": [
+      "debuff",
+      "attack",
+      "special",
+      "attack"
+    ],
+    "attack_damage": 9,
+    "debuff_value": 2,
+    "special_damage": 14,
+    "description": "Тень Улема — Смерти, что никогда не показывает лица, но всегда собирает долги. Особая атака — как внезапный холод в степи. Батыр искал её у родника; здесь она ищет батыра. Невидимка, от которой не убежать, можно только пройти сквозь."
+  },
+  "azhdaha": {
+    "name": "Аждаха",
+    "hp": 68,
+    "intent_pattern": [
+      "attack",
+      "buff",
+      "attack",
+      "special"
+    ],
+    "attack_damage": 10,
+    "buff_value": 2,
+    "special_damage": 16,
+    "description": "Аждаха — огненный дракон неба, младший родич тех семи, что жгут облака. Он усиливается и выплёскивает пламя, как в сказании о небесных змеях. Элита с восьмого этапа — знак, что поход вошёл в земли, где небо и ад соседи."
+  },
+  "hexaghost": {
+    "name": "Древний аждаха",
+    "hp": 220,
+    "intent_pattern": [
+      "attack",
+      "attack",
+      "attack",
+      "special"
+    ],
+    "attack_damage": 6,
+    "special_damage": 10,
+    "description": "Древний аждаха — старше, сильнее, ближе к мифу. Его имя редко произносят у костра: говорят, он помнит потоп и первых батыров. Оставлен в эпосе как легенда о том, что ещё ждёт за горами."
+  },
+  "slime_boss": {
+    "name": "Царь Катил",
+    "hp": 120,
+    "intent_pattern": [
+      "attack",
+      "special",
+      "attack",
+      "special"
+    ],
+    "attack_damage": 10,
+    "special_damage": 14,
+    "description": "Царь Катил — злой властелин, принимавший жертвы, как принимает степь кровь дождя. Особые атаки — требование дани. В походе он — призрак прошлого, когда люди торговались с тьмой. Победить его — значит отказаться от страха жертвовать другими."
+  },
+  "guardian": {
+    "name": "Каменный див",
+    "hp": 200,
+    "intent_pattern": [
+      "block",
+      "attack",
+      "block",
+      "special"
+    ],
+    "attack_damage": 26,
+    "block_value": 25,
+    "special_damage": 16,
+    "description": "Каменный див — страж царства, выросший из скалы, как Уральские горы выросли из тел поверженных. Блокирует, бьёт, использует особые удары. Медленный, неумолимый, как время. Он не злой словами — он злой молчанием."
+  },
+  "shulgen": {
+    "name": "Шульген",
+    "hp": 250,
+    "intent_pattern": [
+      "buff",
+      "attack",
+      "debuff",
+      "attack",
+      "special"
+    ],
+    "attack_damage": 15,
+    "buff_value": 3,
+    "debuff_value": 2,
+    "special_damage": 24,
+    "description": "Шульген — брат Урала, что выпил кровь из раковины и ушёл к дивам. В эпосе он — вторая тень героя: то, что было бы, если бы Урал выбрал силу без морали. Финальный бой: усиление, ярость, особая атака, проклятия. Победить Шульгена — не убить родню, а вернуть миру имя, которое не стыдно петь у костра."
+  }
 }

@@ -90,10 +90,20 @@ export class RunState {
       const encounter = createCombatEncounter(isElite, isBoss, node.floor);
       this.combat = new CombatManager(this.player, encounter);
       this.screen = 'combat';
+      const foe = encounter.enemies[0];
       if (isBoss) {
-        this.banner = { title: 'БОСС', subtitle: 'Судьба забега решается здесь', type: 'boss' };
+        this.banner = {
+          title: foe?.name.toUpperCase() ?? 'ШУЛЬГЕН',
+          subtitle:
+            'Брат против брата. Шульген выпил кровь и ушёл к дивам — сегодня эпос спросит, чья правда сильнее.',
+          type: 'boss',
+        };
       } else if (isElite) {
-        this.banner = { title: 'ЭЛИТНЫЙ БОЙ', subtitle: 'Опасный противник!', type: 'elite' };
+        this.banner = {
+          title: foe?.name.toUpperCase() ?? 'ДИВ НА ПУТИ',
+          subtitle: foe?.description ?? 'Опасный противник!',
+          type: 'elite',
+        };
       } else {
         this.banner = { title: 'БОЙ!', type: 'fight' };
       }

@@ -1,12 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
   <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#8c5ae0"/>
-      <stop offset="100%" stop-color="#ffd75a"/>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1a2840"/>
+      <stop offset="100%" stop-color="#3a2818"/>
+    </linearGradient>
+    <linearGradient id="sun" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e8b84a"/>
+      <stop offset="100%" stop-color="#c47832"/>
     </linearGradient>
   </defs>
-  <rect width="128" height="128" rx="24" fill="#06040f"/>
-  <path d="M64 20 L88 95 H40 Z" fill="url(#g)" opacity="0.9"/>
-  <circle cx="64" cy="72" r="10" fill="#06040f"/>
-  <text x="64" y="118" text-anchor="middle" fill="#ffd75a" font-size="14" font-family="serif">TS</text>
+  <rect width="128" height="128" rx="24" fill="url(#sky)"/>
+  <ellipse cx="64" cy="96" rx="52" ry="14" fill="#2a2010" opacity="0.6"/>
+  <path d="M28 88 Q64 40 100 88" fill="none" stroke="url(#sun)" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="64" cy="52" r="14" fill="url(#sun)"/>
+  <text x="64" y="118" text-anchor="middle" fill="#e8b84a" font-size="13" font-family="serif" font-weight="600">УБ</text>
 </svg>

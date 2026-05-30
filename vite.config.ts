@@ -10,11 +10,11 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg'],
       manifest: {
-        name: 'Тени Шпиля',
-        short_name: 'Шпиль',
-        description: 'Карточный рогалик в браузере',
-        theme_color: '#06040f',
-        background_color: '#06040f',
+        name: 'Приключения Урала Батыра',
+        short_name: 'Урал Батыр',
+        description: 'Карточный рогалик по башкирскому эпосу',
+        theme_color: '#0a0806',
+        background_color: '#0a0806',
         display: 'standalone',
         icons: [
           { src: 'favicon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any maskable' },

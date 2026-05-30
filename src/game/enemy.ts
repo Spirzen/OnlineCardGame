@@ -248,12 +248,13 @@ export function createCombatEncounter(
   floor = 0
 ): Encounter {
   if (isBoss) {
-    const bosses = ['hexaghost', 'slime_boss', 'guardian'];
-    return new Encounter([rngPick(bosses)], 1);
+    return new Encounter(['shulgen'], 1);
   }
   if (isElite) {
-    const elites = ['gremlin_nob', 'sentry'];
-    return new Encounter([rngPick(elites)], 1.1);
+    const earlyElites = ['gremlin_nob', 'sentry', 'ulem_shadow'];
+    const lateElites = [...earlyElites, 'azhdaha'];
+    const pool = floor >= 8 ? lateElites : earlyElites;
+    return new Encounter([rngPick(pool)], 1.15);
   }
   let pool: string[];
   let count: number;

@@ -1,6 +1,7 @@
 import { Tooltip } from './Tooltip';
 import type { Relic } from '../game/relic';
 import type { Player } from '../game/player';
+import { RELIC_ICONS } from '../game/epicTheme';
 
 interface PlayerHUDProps {
   player: Player;
@@ -76,6 +77,7 @@ export function RelicBar({ relics, compact }: { relics: Relic[]; compact?: boole
       {relics.map((r) => (
         <Tooltip key={r.id + r.name} content={r.description}>
           <div className="relic-chip">
+            <span className="relic-chip__icon">{RELIC_ICONS[r.id] ?? '✦'}</span>
             <div className="relic-chip__name">{r.name}</div>
           </div>
         </Tooltip>

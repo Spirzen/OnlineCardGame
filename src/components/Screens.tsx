@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useGame } from '../hooks/useGame';
 import { useFx } from '../hooks/useFx';
 import { LOCALE } from '../game/locale';
+import { EVENT_ICONS } from '../game/epicTheme';
 import { CardView } from './CardView';
 import { Tooltip } from './Tooltip';
 
@@ -37,6 +38,7 @@ export function ShopScreen() {
         <span className="stat-pill stat-pill--gold">🪙 {run.player.gold}</span>
       </div>
       <div className="center-content" style={{ justifyContent: 'flex-start', paddingTop: '1rem' }}>
+        <p className="event-text shop-intro">{LOCALE.SHOP_INTRO}</p>
         <p className="subtitle">{LOCALE.SHOP_CARDS}</p>
         <div className="card-grid">
           {run.shopCards.map((card, i) => (
@@ -75,6 +77,7 @@ export function RestScreen() {
     <div className="screen">
       <div className="center-content">
         <h2 className="title-display">{LOCALE.REST_TITLE}</h2>
+        <p className="event-text rest-intro">{LOCALE.REST_INTRO}</p>
         <div className="rest-options">
           <div className="rest-option panel" onClick={() => dispatch({ type: 'REST_HEAL' })}>
             <div className="rest-option__icon">🔥</div>
@@ -100,6 +103,9 @@ export function EventScreen() {
     <div className="screen">
       <div className="center-content">
         <h2 className="title-display">{ev?.title ?? LOCALE.EVENT_TITLE}</h2>
+        {ev && (
+          <div className="event-icon">{EVENT_ICONS[ev.id] ?? '📜'}</div>
+        )}
         <p className="event-text">{ev?.description}</p>
         {run.eventMessage && <p className="event-result panel">{run.eventMessage}</p>}
         <div className="event-choices">
@@ -151,6 +157,9 @@ export function GameOverScreen({ victory }: { victory: boolean }) {
         <h2 className={`result-title ${victory ? 'result-title--win title-display' : 'result-title--lose'}`}>
           {victory ? LOCALE.VICTORY : LOCALE.GAME_OVER}
         </h2>
+        <p className="result-subtitle">
+          {victory ? LOCALE.VICTORY_SUB : LOCALE.GAME_OVER_SUB}
+        </p>
         <div className="result-stats">
           {!victory && <span>{LOCALE.GAME_OVER_FLOOR}: {floor}</span>}
           <span>{LOCALE.GAME_OVER_KILLS}: {run.kills}</span>
