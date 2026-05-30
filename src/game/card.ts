@@ -1,6 +1,9 @@
 import cardsData from '../data/cards.json';
 import type { CardData } from './types';
 import { CARD_ATTACK, CARD_BLOCK, CARD_BUFF, CARD_DEBUFF, CARD_DRAW, CARD_CREATURE } from './settings';
+import { rngInt, rngShuffle } from './rng';
+import { loadCustomCards } from './customCards';
+import { getClass } from './classes';
 
 export class Card {
   id: string;
@@ -98,7 +101,7 @@ export class Deck {
 
   shuffle() {
     for (let i = this.drawPile.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
+      const j = rngInt(i + 1);
       [this.drawPile[i], this.drawPile[j]] = [this.drawPile[j], this.drawPile[i]];
     }
   }
@@ -159,7 +162,7 @@ export class Hand {
   }
 }
 
-const db = cardsData as CardData[];
+const db = [...(cardsData as CardData[]), ...loadCustomCards()];
 
 function uniqueCards(excludeBasic = false): CardData[] {
   const seen = new Set<string>();
@@ -173,20 +176,30 @@ function uniqueCards(excludeBasic = false): CardData[] {
   return pool;
 }
 
-export function createCard(data: CardData): Card {
-  return new Card(JSON.parse(JSON.stringify(data)));
-}
-
-export function createStartingDeck(): Card[] {
+function cardById(): Record<string, CardData> {
   const byId: Record<string, CardData> = {};
   for (const c of db) {
     if (!byId[c.id]) byId[c.id] = c;
   }
+  return byId;
+}
+
+export function createCard(data: CardData): Card {
+  return new Card(JSON.parse(JSON.stringify(data)));
+}
+
+export function createStartingDeck(classId = 'warrior'): Card[] {
+  const byId = cardById();
+  const cls = getClass(classId);
   const deck: Card[] = [];
-  for (let i = 0; i < 3; i++) if (byId.strike) deck.push(createCard(byId.strike));
-  for (let i = 0; i < 3; i++) if (byId.defend) deck.push(createCard(byId.defend));
-  for (const id of ['iron_wave', 'shrug_it_off', 'pommel_strike']) {
-    if (byId[id]) deck.push(createCard(byId[id]));
+  for (const { id, count } of cls.deck) {
+    if (byId[id]) {
+      for (let i = 0; i < count; i++) deck.push(createCard(byId[id]));
+    }
+  }
+  if (deck.length === 0) {
+    for (let i = 0; i < 4; i++) if (byId.strike) deck.push(createCard(byId.strike));
+    for (let i = 0; i < 4; i++) if (byId.defend) deck.push(createCard(byId.defend));
   }
   return deck;
 }
@@ -197,14 +210,12 @@ export function getRewardCards(count = 3): Card[] {
     pool = uniqueCards(false).filter((c) => c.rarity !== 'basic');
     if (pool.length === 0) pool = uniqueCards(false);
   }
-  const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count).map(createCard);
+  return rngShuffle(pool).slice(0, count).map(createCard);
 }
 
 export function getShopCards(count = 5): Card[] {
   const pool = uniqueCards(true);
-  const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count).map(createCard);
+  return rngShuffle(pool).slice(0, count).map(createCard);
 }
 
 export function getTypeLabel(type: string): string {

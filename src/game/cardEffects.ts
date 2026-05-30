@@ -1,3 +1,4 @@
+import { rngInt, rngShuffle } from './rng';
 import type { CombatManager } from './combat';
 import type { Enemy } from './enemy';
 import type { Card } from './card';
@@ -110,7 +111,7 @@ function discardFromHand(combat: CombatManager, count: number, messages: string[
   const hand = combat.player.hand.cards;
   if (!hand.length || count <= 0) return 0;
   const n = Math.min(count, hand.length);
-  const indices = [...Array(hand.length).keys()].sort(() => Math.random() - 0.5).slice(0, n);
+  const indices = rngShuffle([...Array(hand.length).keys()]).slice(0, n);
   const discarded: Card[] = [];
   for (const idx of [...indices].sort((a, b) => b - a)) {
     const c = combat.player.hand.remove(idx);
@@ -414,7 +415,7 @@ export function modifyAttackDamage(
   }
   if (bonuses.some((b) => b.id === EFFECT_RANDOM_HIT)) {
     const spread = Math.max(2, Math.floor(damage / 3));
-    damage = Math.max(1, damage + Math.floor(Math.random() * (spread * 2 + 1)) - spread);
+    damage = Math.max(1, damage + rngInt(spread * 2 + 1) - spread);
   }
   if (enemy.marked > 0) {
     damage += enemy.marked;

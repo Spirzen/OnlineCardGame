@@ -1,4 +1,5 @@
 import relicsData from '../data/relics.json';
+import { rngShuffle } from './rng';
 import type { RelicData } from './types';
 import type { Player } from './player';
 
@@ -22,9 +23,13 @@ export class Relic {
 
 const db = relicsData as RelicData[];
 
+export function getRelicPickOptions(count = 3): Relic[] {
+  const pool = db.filter((r) => r.rarity !== 'starter');
+  return rngShuffle(pool).slice(0, count).map((r) => new Relic(r));
+}
+
 export function getRandomRelics(count = 3): Relic[] {
-  const shuffled = [...db].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count).map((r) => new Relic(r));
+  return getRelicPickOptions(count);
 }
 
 export function getStarterRelic(): Relic {

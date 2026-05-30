@@ -37,8 +37,12 @@ export class Player {
   channelEnergy = 0;
 
   constructor() {
-    this.deck = new Deck(createStartingDeck());
+    this.deck = new Deck([]);
     this.hand = new Hand();
+  }
+
+  initDeck(classId: string) {
+    this.deck = new Deck(createStartingDeck(classId));
   }
 
   resetCombat() {

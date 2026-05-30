@@ -68,19 +68,42 @@ export interface EnemyData {
 
 export type Screen =
   | 'menu'
+  | 'class_select'
+  | 'relic_pick'
   | 'map'
   | 'combat'
   | 'reward'
   | 'shop'
   | 'rest'
+  | 'smith'
   | 'event'
   | 'treasure'
   | 'game_over'
-  | 'victory';
+  | 'victory'
+  | 'stats'
+  | 'card_editor';
+
+export interface LeaderboardEntry {
+  floor: number;
+  kills: number;
+  classId: string;
+  daily: boolean;
+  date: string;
+}
 
 export interface SessionStats {
   totalRuns: number;
   totalWins: number;
   bestFloor: number;
   totalKills: number;
+  dailyBestFloor: number;
+  leaderboard: LeaderboardEntry[];
+}
+
+export interface FxPayload {
+  id: number;
+  kind: 'damage' | 'block' | 'heal' | 'shake' | 'confetti' | 'slash';
+  x?: number | string;
+  y?: number | string;
+  value?: number;
 }

@@ -1,3 +1,4 @@
+import { rngPick, rngChance, rng } from './rng';
 import enemiesData from '../data/enemies.json';
 import type { EnemyData } from './types';
 import { LOCALE } from './locale';
@@ -119,8 +120,8 @@ export class Enemy {
           this.blindTurns--;
           messages.push(`${this.name} промахивается (ослепление)!`);
         } else {
-          const dmg = player.takeDamage(dmgVal);
-          messages.push(`${this.name} атакует на ${dmgVal} (${dmg} прошло)!`);
+          player.takeDamage(dmgVal);
+          messages.push(`${this.name} атакует на ${dmgVal}!`);
           if (player.reflect > 0) {
             const dealt = this.takeDamage(player.reflect, true);
             messages.push(`Отражение: ${player.reflect} → ${this.name} (${dealt} прошло)`);
@@ -159,7 +160,7 @@ export class Enemy {
           messages.push(`${this.name} промахивается (ослепление)!`);
         } else {
           const dmg = player.takeDamage(dmgVal);
-          messages.push(`${this.name}: ${this.blockValue} брони и ${dmgVal} урона!`);
+          messages.push(`${this.name}: ${this.blockValue} брони и ${dmgVal} урона (${dmg} прошло)!`);
         }
         break;
       }
@@ -248,11 +249,11 @@ export function createCombatEncounter(
 ): Encounter {
   if (isBoss) {
     const bosses = ['hexaghost', 'slime_boss', 'guardian'];
-    return new Encounter([bosses[Math.floor(Math.random() * bosses.length)]], 1);
+    return new Encounter([rngPick(bosses)], 1);
   }
   if (isElite) {
     const elites = ['gremlin_nob', 'sentry'];
-    return new Encounter([elites[Math.floor(Math.random() * elites.length)]], 1.1);
+    return new Encounter([rngPick(elites)], 1.1);
   }
   let pool: string[];
   let count: number;
@@ -261,12 +262,12 @@ export function createCombatEncounter(
     count = 1;
   } else if (floor <= 2) {
     pool = ['louse', 'slime', 'cultist'];
-    count = Math.random() < 0.35 ? 2 : 1;
+    count = rngChance(0.35) ? 2 : 1;
   } else {
     pool = ['cultist', 'jaw_worm', 'louse', 'slime'];
-    const r = Math.random();
+    const r = rng();
     count = r < 0.1 ? 3 : r < 0.5 ? 2 : 1;
   }
-  const enemies = Array.from({ length: count }, () => pool[Math.floor(Math.random() * pool.length)]);
+  const enemies = Array.from({ length: count }, () => rngPick(pool));
   return new Encounter(enemies);
 }

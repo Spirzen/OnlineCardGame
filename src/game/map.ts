@@ -7,6 +7,7 @@ import {
   NODE_TREASURE,
   NODE_EVENT,
 } from './settings';
+import { rngInt, rngShuffle, rng } from './rng';
 
 export class MapNode {
   type: string;
@@ -44,9 +45,8 @@ export class GameMap {
     for (let f = 0; f < GameMap.FLOORS; f++) {
       const floorNodes: MapNode[] = [];
       const numNodes =
-        f > 0 && f < GameMap.FLOORS - 1 ? 2 + Math.floor(Math.random() * 3) : 1;
-      const rows = [...Array(GameMap.ROWS_PER_FLOOR).keys()]
-        .sort(() => Math.random() - 0.5)
+        f > 0 && f < GameMap.FLOORS - 1 ? 2 + rngInt(3) : 1;
+      const rows = rngShuffle([...Array(GameMap.ROWS_PER_FLOOR).keys()])
         .slice(0, Math.min(numNodes, GameMap.ROWS_PER_FLOOR))
         .sort((a, b) => a - b);
 
@@ -81,7 +81,7 @@ export class GameMap {
     };
     const types = Object.keys(weights);
     const total = types.reduce((s, t) => s + weights[t], 0);
-    let r = Math.random() * total;
+    let r = rng() * total;
     for (const t of types) {
       r -= weights[t];
       if (r <= 0) return t;
@@ -97,7 +97,7 @@ export class GameMap {
         const nearby = [...nextFloor].sort(
           (a, b) => Math.abs(a.row - node.row) - Math.abs(b.row - node.row)
         );
-        const count = 1 + Math.floor(Math.random() * Math.min(2, nearby.length));
+        const count = 1 + rngInt(Math.min(2, nearby.length));
         for (const target of nearby.slice(0, count)) {
           if (!node.connections.includes(target)) {
             node.connections.push(target);
