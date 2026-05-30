@@ -78,10 +78,14 @@ export type Screen =
   | 'smith'
   | 'event'
   | 'treasure'
+  | 'codex'
+  | 'epic_novel'
+  | 'story_tutorial'
   | 'game_over'
   | 'victory'
   | 'stats'
-  | 'card_editor';
+  | 'card_editor'
+  | 'clicker';
 
 export interface LeaderboardEntry {
   floor: number;
@@ -98,12 +102,31 @@ export interface SessionStats {
   totalKills: number;
   dailyBestFloor: number;
   leaderboard: LeaderboardEntry[];
+  ascensionLevel: number;
+  maxAscensionUnlocked: number;
 }
 
 export interface FxPayload {
   id: number;
-  kind: 'damage' | 'block' | 'heal' | 'shake' | 'confetti' | 'slash';
+  kind:
+    | 'damage'
+    | 'block'
+    | 'heal'
+    | 'shake'
+    | 'confetti'
+    | 'slash'
+    | 'fire'
+    | 'ice'
+    | 'lightning'
+    | 'holy'
+    | 'blood'
+    | 'shield'
+    | 'buff'
+    | 'debuff'
+    | 'spark'
+    | 'impact';
   x?: number | string;
   y?: number | string;
   value?: number;
+  label?: string;
 }

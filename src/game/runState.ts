@@ -14,10 +14,24 @@ import { createCombatEncounter } from './enemy';
 import { Card, getRewardCards, getShopCards } from './card';
 import { Relic, getRelicPickOptions, getShopDiscount } from './relic';
 import { getClass } from './classes';
-import { SeededRNG, setActiveRng, dailySeed, randomSeed, rngPick } from './rng';
-import { loadSessionStats, saveSessionStats, addLeaderboardEntry } from './stats';
+import { SeededRNG, setActiveRng, dailySeed, randomSeed } from './rng';
+import { loadSessionStats, saveSessionStats, addLeaderboardEntry, unlockAscension } from './stats';
+import { clearSavedRun } from './runSave';
+import { ClickerState, saveClickerBestLevel } from './clickerState';
+import { clearClickerSave } from './clickerSave';
 import { GAME_EVENTS, type GameEvent } from './events';
+import { pickEventForFloor } from './events/eventPool';
 import { upgradeCard } from './upgrade';
+import {
+  CODEX_BY_ID,
+  getStartUnlocks,
+  getUnlocksForAct,
+  getUnlockForEnemyKill,
+  getStoryTutorialUnlocks,
+  type CodexEntry,
+} from './codex';
+import { addMetaCodexUnlocks, loadMetaCodexUnlocks } from './metaCodex';
+import { setStoryTutorialStatus } from './storyTutorial';
 import type { Screen, SessionStats } from './types';
 
 export class RunState {
@@ -33,6 +47,7 @@ export class RunState {
   smithCards: Card[] = [];
   kills = 0;
   eventMessage = '';
+  seenEventIds: string[] = [];
   currentEvent: GameEvent | null = null;
   pendingNode: MapNode | null = null;
   stats: SessionStats = loadSessionStats();
@@ -40,11 +55,21 @@ export class RunState {
   selectedClassId = 'warrior';
   isDailyRun = false;
   runSeed = 0;
+  ascensionLevel = 0;
   deckModalOpen = false;
+  unlockedCodexIds: string[] = [];
+  codexDisplayQueue: CodexEntry[] = [];
+  codexBrowseMode = false;
+  codexMenuMode = false;
+  codexStoryReveal = false;
+  epicNovelReturnScreen: Screen = 'menu';
+  clicker: ClickerState | null = null;
 
   beginRunSetup(daily = false) {
     this.isDailyRun = daily;
     this.runSeed = daily ? dailySeed() : randomSeed();
+    this.ascensionLevel = daily ? 0 : loadSessionStats().ascensionLevel;
+    clearSavedRun();
     this.screen = 'class_select';
   }
 
@@ -75,9 +100,104 @@ export class RunState {
     this.gameMap = new GameMap();
     this.combat = null;
     this.kills = 0;
+    this.seenEventIds = [];
+    this.unlockedCodexIds = [];
+    this.codexDisplayQueue = [];
+    this.codexBrowseMode = false;
+    this.codexMenuMode = false;
+    this.codexStoryReveal = false;
     this.stats.totalRuns++;
     saveSessionStats(this.stats);
-    this.screen = 'map';
+    this.unlockCodexIds(getStartUnlocks());
+    this.mergeMetaCodexUnlocks();
+    this.showCodexQueue();
+  }
+
+  mergeMetaCodexUnlocks() {
+    for (const id of loadMetaCodexUnlocks()) {
+      if (!this.unlockedCodexIds.includes(id)) {
+        this.unlockedCodexIds.push(id);
+      }
+    }
+  }
+
+  completeStoryTutorial() {
+    setStoryTutorialStatus('completed');
+    const ids = getStoryTutorialUnlocks();
+    const newlyMeta = addMetaCodexUnlocks(ids);
+    this.codexMenuMode = false;
+    this.codexStoryReveal = true;
+    if (newlyMeta.length > 0) {
+      this.unlockCodexIds(newlyMeta);
+    } else {
+      this.mergeMetaCodexUnlocks();
+    }
+    this.showCodexQueue();
+  }
+
+  unlockCodexIds(ids: string[]) {
+    const newlyUnlocked: CodexEntry[] = [];
+    for (const id of ids) {
+      if (!this.unlockedCodexIds.includes(id)) {
+        this.unlockedCodexIds.push(id);
+        const entry = CODEX_BY_ID[id];
+        if (entry) newlyUnlocked.push(entry);
+      }
+    }
+    for (const entry of newlyUnlocked) {
+      if (!this.codexDisplayQueue.some((e) => e.id === entry.id)) {
+        this.codexDisplayQueue.push(entry);
+      }
+    }
+  }
+
+  unlockCodexForEnemy(enemyId: string) {
+    this.unlockCodexIds(getUnlockForEnemyKill(enemyId));
+  }
+
+  unlockCodexForAct(act: number) {
+    this.unlockCodexIds(getUnlocksForAct(act));
+  }
+
+  showCodexQueue() {
+    if (this.codexDisplayQueue.length > 0) {
+      this.codexBrowseMode = false;
+      this.screen = 'codex';
+    } else {
+      this.screen = this.gameMap ? 'map' : 'menu';
+    }
+  }
+
+  openCodexBrowse() {
+    this.codexMenuMode = false;
+    this.codexBrowseMode = true;
+    this.screen = 'codex';
+  }
+
+  openCodexFromMenu() {
+    this.codexMenuMode = true;
+    this.codexBrowseMode = true;
+    this.codexDisplayQueue = [];
+    this.codexStoryReveal = false;
+    this.screen = 'codex';
+  }
+
+  openEpicNovel(fromScreen: Screen = 'menu') {
+    this.epicNovelReturnScreen = fromScreen === 'codex' ? 'codex' : 'menu';
+    this.screen = 'epic_novel';
+  }
+
+  closeEpicNovel() {
+    this.screen = this.epicNovelReturnScreen;
+  }
+
+  dismissCodex() {
+    this.codexDisplayQueue = [];
+    this.codexBrowseMode = false;
+    this.codexStoryReveal = false;
+    const fromMenu = this.codexMenuMode;
+    this.codexMenuMode = false;
+    this.screen = fromMenu || !this.gameMap ? 'menu' : 'map';
   }
 
   enterNode(node: MapNode) {
@@ -87,7 +207,8 @@ export class RunState {
     if ([NODE_COMBAT, NODE_ELITE, NODE_BOSS].includes(ntype)) {
       const isElite = ntype === NODE_ELITE;
       const isBoss = ntype === NODE_BOSS;
-      const encounter = createCombatEncounter(isElite, isBoss, node.floor);
+      const ascMult = 1 + 0.12 * this.ascensionLevel;
+      const encounter = createCombatEncounter(isElite, isBoss, node.floor, ascMult);
       this.combat = new CombatManager(this.player, encounter);
       this.screen = 'combat';
       const foe = encounter.enemies[0];
@@ -105,7 +226,15 @@ export class RunState {
           type: 'elite',
         };
       } else {
-        this.banner = { title: 'БОЙ!', type: 'fight' };
+        const mythIds = new Set([
+          'yulmauz', 'myaskay', 'vampir', 'shurale', 'bigalyash', 'bire', 'bapak', 'bichura', 'yuha',
+        ]);
+        const isMyth = foe && mythIds.has(foe.id);
+        this.banner = {
+          title: isMyth ? foe!.name.toUpperCase() : 'БОЙ!',
+          subtitle: isMyth ? foe!.description.slice(0, 120) + '…' : undefined,
+          type: 'fight',
+        };
       }
     } else if (ntype === NODE_REST) {
       this.screen = 'rest';
@@ -117,15 +246,27 @@ export class RunState {
       this.treasureRelics = getRelicPickOptions(3);
       this.screen = 'treasure';
     } else if (ntype === NODE_EVENT) {
-      this.currentEvent = rngPick(GAME_EVENTS);
+      this.currentEvent = pickEventForFloor(
+        GAME_EVENTS,
+        node.floor,
+        new Set(this.seenEventIds),
+        this.selectedClassId,
+      );
+      if (this.currentEvent && !this.seenEventIds.includes(this.currentEvent.id)) {
+        this.seenEventIds.push(this.currentEvent.id);
+      }
       this.eventMessage = '';
       this.screen = 'event';
     }
   }
 
   onCombatVictory() {
-    this.kills += this.combat?.encounter.enemies.length ?? 0;
-    this.stats.totalKills += this.combat?.encounter.enemies.length ?? 0;
+    const defeated = this.combat?.encounter.enemies ?? [];
+    for (const enemy of defeated) {
+      this.unlockCodexForEnemy(enemy.id);
+    }
+    this.kills += defeated.length;
+    this.stats.totalKills += defeated.length;
     saveSessionStats(this.stats);
     this.rewardCards = getRewardCards(3);
     this.screen = 'reward';
@@ -133,6 +274,7 @@ export class RunState {
 
   onCombatDefeat() {
     this.recordRunEnd(false);
+    clearSavedRun();
     this.screen = 'game_over';
   }
 
@@ -141,9 +283,13 @@ export class RunState {
     if (won) {
       this.stats.totalWins++;
       this.stats.bestFloor = Math.max(this.stats.bestFloor, 15);
+      if (!this.isDailyRun) {
+        this.stats = unlockAscension(this.stats, this.ascensionLevel);
+      }
       if (this.isDailyRun) {
         this.stats.dailyBestFloor = Math.max(this.stats.dailyBestFloor, 15);
       }
+      clearSavedRun();
     } else {
       this.stats.bestFloor = Math.max(this.stats.bestFloor, floor);
       if (this.isDailyRun) {
@@ -255,6 +401,7 @@ export class RunState {
   }
 
   completeNode() {
+    const completedFloor = this.pendingNode?.floor;
     if (this.gameMap && this.pendingNode) {
       this.gameMap.completeCurrentNode();
       if (this.gameMap.isBossFloor() && this.pendingNode.completed) {
@@ -264,15 +411,80 @@ export class RunState {
         return;
       }
     }
-    this.screen = 'map';
     this.pendingNode = null;
     this.combat = null;
+
+    // Кодекс между актами: этаж 5 (index 4) и этаж 10 (index 9)
+    if (completedFloor === 4) {
+      this.unlockCodexForAct(1);
+      this.showCodexQueue();
+      return;
+    }
+    if (completedFloor === 9) {
+      this.unlockCodexForAct(2);
+      this.showCodexQueue();
+      return;
+    }
+
+    if (this.codexDisplayQueue.length > 0) {
+      this.showCodexQueue();
+      return;
+    }
+
+    this.screen = 'map';
   }
 
   goToMenu() {
+    clearSavedRun();
+    clearClickerSave();
+    this.clicker = null;
     this.screen = 'menu';
     this.gameMap = null;
     this.combat = null;
+  }
+
+  beginClicker() {
+    clearSavedRun();
+    this.clicker = new ClickerState();
+    this.clicker.begin();
+    this.screen = 'clicker';
+  }
+
+  continueClicker(state: ClickerState) {
+    clearSavedRun();
+    this.clicker = state;
+    this.screen = 'clicker';
+  }
+
+  clickerClick() {
+    return this.clicker?.clickAttack() ?? null;
+  }
+
+  clickerTick(deltaMs: number) {
+    return this.clicker?.tick(deltaMs) ?? null;
+  }
+
+  clickerBuyUpgrade(id: string) {
+    return this.clicker?.buyUpgrade(id) ?? false;
+  }
+
+  clickerPickEvent(index: number) {
+    this.clicker?.pickEventChoice(index);
+  }
+
+  clickerContinueEvent() {
+    this.clicker?.continueFromEvent();
+  }
+
+  clickerGameOver() {
+    if (this.clicker) {
+      saveClickerBestLevel(this.clicker.level);
+      this.clicker.subScreen = 'game_over';
+    }
+  }
+
+  clickerRestart() {
+    this.beginClicker();
   }
 
   openStats() {

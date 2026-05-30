@@ -3,6 +3,7 @@ import { useGame } from '../hooks/useGame';
 import { useFx } from '../hooks/useFx';
 import { LOCALE } from '../game/locale';
 import { EVENT_ICONS } from '../game/epicTheme';
+import { getActLore } from '../game/acts';
 import { CardView } from './CardView';
 import { Tooltip } from './Tooltip';
 
@@ -16,7 +17,7 @@ export function RewardScreen() {
         <h2 className="title-display">{LOCALE.REWARD_VICTORY}</h2>
         <p style={{ color: 'var(--gold)' }}>+{gold} {LOCALE.REWARD_GOLD}</p>
         <p className="subtitle">{LOCALE.REWARD_CHOOSE}</p>
-        <div className="card-grid">
+        <div className="card-grid card-grid--reward">
           {run.rewardCards.map((card, i) => (
             <CardView key={i} card={card} variant="reward" onClick={() => dispatch({ type: 'PICK_REWARD', index: i })} />
           ))}
@@ -98,6 +99,7 @@ export function RestScreen() {
 export function EventScreen() {
   const { run, dispatch } = useGame();
   const ev = run.currentEvent;
+  const actLore = run.pendingNode ? getActLore(run.pendingNode.floor) : null;
 
   return (
     <div className="screen">
@@ -105,6 +107,14 @@ export function EventScreen() {
         <h2 className="title-display">{ev?.title ?? LOCALE.EVENT_TITLE}</h2>
         {ev && (
           <div className="event-icon">{EVENT_ICONS[ev.id] ?? '📜'}</div>
+        )}
+        {actLore && !run.eventMessage && (
+          <p className="event-act-lore">{actLore}</p>
+        )}
+        {ev?.loreSnippet && !run.eventMessage && (
+          <div className="event-lore panel">
+            <strong>{LOCALE.EVENT_LORE_LABEL}:</strong> {ev.loreSnippet}
+          </div>
         )}
         <p className="event-text">{ev?.description}</p>
         {run.eventMessage && <p className="event-result panel">{run.eventMessage}</p>}

@@ -69,7 +69,7 @@ export function EnemyPanel({ enemy, selected, targetable, onClick, hitFlash }: E
   if (!enemy.description) return panel;
 
   return (
-    <Tooltip content={enemy.description} wide placement="top">
+    <Tooltip content={enemy.description} wide portal placement="bottom">
       {panel}
     </Tooltip>
   );

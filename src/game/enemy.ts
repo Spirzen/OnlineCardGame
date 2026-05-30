@@ -245,30 +245,67 @@ export class Encounter {
 export function createCombatEncounter(
   isElite: boolean,
   isBoss: boolean,
-  floor = 0
+  floor = 0,
+  ascMult = 1
 ): Encounter {
   if (isBoss) {
-    return new Encounter(['shulgen'], 1);
+    return new Encounter(['shulgen'], ascMult);
   }
   if (isElite) {
-    const earlyElites = ['gremlin_nob', 'sentry', 'ulem_shadow'];
-    const lateElites = [...earlyElites, 'azhdaha'];
-    const pool = floor >= 8 ? lateElites : earlyElites;
-    return new Encounter([rngPick(pool)], 1.15);
+    const earlyElites = ['gremlin_nob', 'sentry', 'ulem_shadow', 'shurale_elite'];
+    const midElites = [...earlyElites, 'azhdaha', 'yulmauz_elder', 'vampir_elder'];
+    const lateElites = [...midElites, 'zarkum_guard'];
+    let pool: string[];
+    if (floor >= 11) pool = lateElites;
+    else if (floor >= 6) pool = midElites;
+    else pool = earlyElites;
+    return new Encounter([rngPick(pool)], 1.15 * ascMult);
   }
-  let pool: string[];
+
+  const act1Myth = ['shurale', 'bigalyash', 'bire', 'bapak', 'yulmauz'];
+  const act2Myth = ['yulmauz', 'myaskay', 'vampir', 'bichura', 'yuha', 'shurale', 'bigalyash'];
+  const act3Myth = ['myaskay', 'vampir', 'yuha', 'yulmauz', 'bichura', 'bapak'];
+
+  let mythPool: string[] = [];
+  if (floor <= 4) mythPool = act1Myth;
+  else if (floor <= 9) mythPool = act2Myth;
+  else mythPool = act3Myth;
+
+  const regularPool = ['cultist', 'jaw_worm', 'louse', 'slime', 'sentry'].filter((id) => {
+    if (floor <= 0) return ['louse', 'slime'].includes(id);
+    if (floor <= 2) return ['louse', 'slime', 'cultist'].includes(id);
+    if (floor <= 4) return ['cultist', 'jaw_worm', 'louse', 'slime'].includes(id);
+    if (floor <= 9) return ['cultist', 'jaw_worm', 'slime'].includes(id);
+    return true;
+  });
+
   let count: number;
-  if (floor <= 0) {
-    pool = ['louse', 'slime'];
-    count = 1;
-  } else if (floor <= 2) {
-    pool = ['louse', 'slime', 'cultist'];
-    count = rngChance(0.35) ? 2 : 1;
-  } else {
-    pool = ['cultist', 'jaw_worm', 'louse', 'slime'];
+  if (floor <= 0) count = 1;
+  else if (floor <= 2) count = rngChance(0.35) ? 2 : 1;
+  else if (floor <= 4) count = rngChance(0.4) ? 2 : 1;
+  else {
     const r = rng();
-    count = r < 0.1 ? 3 : r < 0.5 ? 2 : 1;
+    count = floor <= 9
+      ? r < 0.15 ? 3 : r < 0.45 ? 2 : 1
+      : r < 0.2 ? 3 : r < 0.5 ? 2 : 1;
   }
-  const enemies = Array.from({ length: count }, () => rngPick(pool));
-  return new Encounter(enemies);
+
+  const enemies: string[] = [];
+  const useMyth = mythPool.length > 0 && rngChance(0.35);
+
+  for (let i = 0; i < count; i++) {
+    if (useMyth && i === 0) {
+      const mythId = rngPick(mythPool);
+      if (mythId === 'bichura') {
+        enemies.push('bichura', 'bichura');
+        if (rngChance(0.4)) enemies.push('bichura');
+      } else {
+        enemies.push(mythId);
+      }
+    } else {
+      enemies.push(rngPick(regularPool));
+    }
+  }
+
+  return new Encounter(enemies, ascMult);
 }

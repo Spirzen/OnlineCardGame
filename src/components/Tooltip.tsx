@@ -7,8 +7,10 @@ interface TooltipProps {
   wide?: boolean;
   /** Render via portal so parent overflow cannot clip the tooltip */
   portal?: boolean;
-  placement?: 'top' | 'bottom';
+  placement?: 'top' | 'bottom' | 'auto';
 }
+
+const VIEWPORT_PAD = 12;
 
 export function Tooltip({
   content,
@@ -19,17 +21,36 @@ export function Tooltip({
 }: TooltipProps) {
   const [show, setShow] = useState(false);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [resolvedPlacement, setResolvedPlacement] = useState<'top' | 'bottom'>(
+    placement === 'bottom' ? 'bottom' : 'top',
+  );
   const wrapRef = useRef<HTMLSpanElement>(null);
+
+  const resolvePlacement = useCallback(
+    (rect: DOMRect): 'top' | 'bottom' => {
+      if (placement === 'top') return 'top';
+      if (placement === 'bottom') return 'bottom';
+      const spaceAbove = rect.top - VIEWPORT_PAD;
+      const spaceBelow = window.innerHeight - rect.bottom - VIEWPORT_PAD;
+      const minNeeded = wide ? 120 : 80;
+      if (spaceAbove >= minNeeded) return 'top';
+      if (spaceBelow >= minNeeded) return 'bottom';
+      return spaceBelow >= spaceAbove ? 'bottom' : 'top';
+    },
+    [placement, wide],
+  );
 
   const updatePosition = useCallback(() => {
     const el = wrapRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
+    const resolved = resolvePlacement(rect);
+    setResolvedPlacement(resolved);
     setCoords({
       x: rect.left + rect.width / 2,
-      y: placement === 'top' ? rect.top : rect.bottom,
+      y: resolved === 'top' ? rect.top : rect.bottom,
     });
-  }, [placement]);
+  }, [resolvePlacement]);
 
   useEffect(() => {
     if (!show || !portal) return;
@@ -48,11 +69,13 @@ export function Tooltip({
     setShow(true);
   };
 
+  const effectivePlacement = portal ? resolvedPlacement : placement === 'auto' ? 'top' : placement;
+
   const tooltipClass = [
     'tooltip',
     wide ? 'tooltip--wide' : '',
     portal ? 'tooltip--portal' : '',
-    portal ? `tooltip--portal-${placement}` : '',
+    portal ? `tooltip--portal-${resolvedPlacement}` : '',
   ]
     .filter(Boolean)
     .join(' ');
@@ -70,7 +93,16 @@ export function Tooltip({
         document.body,
       )
     ) : (
-      <span className={tooltipClass} role="tooltip">
+      <span
+        className={[
+          'tooltip',
+          wide ? 'tooltip--wide' : '',
+          effectivePlacement === 'bottom' ? 'tooltip--bottom' : '',
+        ]
+          .filter(Boolean)
+          .join(' ')}
+        role="tooltip"
+      >
         {content}
       </span>
     )
@@ -86,8 +118,7 @@ export function Tooltip({
       onBlur={() => setShow(false)}
     >
       {children}
-      {!portal && tooltipNode}
-      {portal && tooltipNode}
+      {tooltipNode}
     </span>
   );
 }

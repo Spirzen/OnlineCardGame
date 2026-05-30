@@ -1,4 +1,13 @@
-import { rngInt } from './rng';
+import { rngInt, rngChance } from './rng';
+import {
+  type ActiveCombatDialogue,
+  COMBAT_DIALOGUE_CHANCE,
+  COMBAT_DIALOGUE_MAX_PER_FIGHT,
+  pickDialogueForEnemy,
+  buildActiveDialogue,
+  applyDialogueChoiceEffect,
+  applyDialogueSilence,
+} from './combatDialogues';
 import {
   CARD_ATTACK,
   CARD_BLOCK,
@@ -44,6 +53,9 @@ export class CombatManager {
   combatOver = false;
   victory = false;
   goldReward = 0;
+  activeDialogue: ActiveCombatDialogue | null = null;
+  dialoguesShown = 0;
+  dialogueIdsShown: string[] = [];
 
   constructor(player: Player, encounter: Encounter) {
     this.player = player;
@@ -78,6 +90,7 @@ export class CombatManager {
 
     this.turn = 1;
     this.log = [LOCALE.COMBAT_STARTED, `${LOCALE.COMBAT_TURN} ${this.turn}${LOCALE.COMBAT_YOUR_TURN}`];
+    this.maybeTriggerDialogue();
   }
 
   addLog(msg: string) {
@@ -85,7 +98,49 @@ export class CombatManager {
     if (this.log.length > 8) this.log = this.log.slice(-8);
   }
 
+  hasActiveDialogue(): boolean {
+    return this.activeDialogue !== null;
+  }
+
+  maybeTriggerDialogue() {
+    if (this.combatOver || this.activeDialogue) return;
+    if (this.dialoguesShown >= COMBAT_DIALOGUE_MAX_PER_FIGHT) return;
+    if (!rngChance(COMBAT_DIALOGUE_CHANCE)) return;
+
+    const living = this.encounter.getLivingEnemies();
+    if (!living.length) return;
+
+    const enemy = living[rngInt(living.length)];
+    const enemyIndex = this.encounter.enemies.indexOf(enemy);
+    const def = pickDialogueForEnemy(enemy.id, this.dialogueIdsShown);
+    this.activeDialogue = buildActiveDialogue(def, enemy, enemyIndex);
+    this.dialoguesShown++;
+    this.dialogueIdsShown.push(def.id);
+    this.addLog(`${enemy.name} обращается к вам…`);
+  }
+
+  respondToDialogue(choiceIndex: number): string | null {
+    if (!this.activeDialogue || this.combatOver) return null;
+    if (choiceIndex < 0 || choiceIndex > 3) return null;
+
+    const { enemyName } = this.activeDialogue;
+    let result: string;
+
+    if (choiceIndex === 3) {
+      result = applyDialogueSilence();
+    } else {
+      const choice = this.activeDialogue.choices[choiceIndex];
+      if (!choice) return null;
+      result = applyDialogueChoiceEffect(choice.effect, this.player);
+    }
+
+    this.activeDialogue = null;
+    this.addLog(`${enemyName}: «…» — ${result}`);
+    return result;
+  }
+
   canPlayCard(cardIndex: number): boolean {
+    if (this.activeDialogue) return false;
     if (this.state !== CombatManager.STATE_PLAYER_TURN) return false;
     if (cardIndex < 0 || cardIndex >= this.player.hand.cards.length) return false;
     return this.player.energy >= this.player.hand.cards[cardIndex].cost;
@@ -207,6 +262,7 @@ export class CombatManager {
   }
 
   endPlayerTurn() {
+    if (this.activeDialogue) return;
     if (this.state !== CombatManager.STATE_PLAYER_TURN) return;
     const endMsgs: string[] = [];
     processPlayerEndTurn(this, endMsgs);
@@ -259,6 +315,7 @@ export class CombatManager {
 
     this.state = CombatManager.STATE_PLAYER_TURN;
     this.addLog(`${LOCALE.COMBAT_TURN} ${this.turn}${LOCALE.COMBAT_YOUR_TURN}`);
+    this.maybeTriggerDialogue();
   }
 
   endCombatVictory() {

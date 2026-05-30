@@ -23,10 +23,12 @@ export const CLASSES: ClassDef[] = [
     energy: 3,
     gold: 99,
     deck: [
-      { id: 'strike', count: 4 },
-      { id: 'defend', count: 4 },
+      { id: 'strike', count: 3 },
+      { id: 'defend', count: 3 },
       { id: 'bash', count: 1 },
       { id: 'iron_wave', count: 1 },
+      { id: 'wild_strike', count: 1 },
+      { id: 'pommel_strike', count: 1 },
     ],
   },
   {
@@ -41,10 +43,12 @@ export const CLASSES: ClassDef[] = [
     energy: 3,
     gold: 99,
     deck: [
-      { id: 'strike', count: 5 },
-      { id: 'defend', count: 3 },
+      { id: 'strike', count: 3 },
+      { id: 'defend', count: 2 },
       { id: 'shrug_it_off', count: 2 },
       { id: 'battle_trance', count: 1 },
+      { id: 'falcon_dive', count: 1 },
+      { id: 'steppe_wind', count: 1 },
     ],
   },
   {
@@ -59,10 +63,12 @@ export const CLASSES: ClassDef[] = [
     energy: 3,
     gold: 99,
     deck: [
-      { id: 'strike', count: 3 },
-      { id: 'defend', count: 5 },
+      { id: 'strike', count: 2 },
+      { id: 'defend', count: 4 },
       { id: 'true_grit', count: 1 },
       { id: 'inflame', count: 1 },
+      { id: 'arslan_hide', count: 1 },
+      { id: 'shield_bash', count: 1 },
     ],
   },
   {
@@ -77,11 +83,13 @@ export const CLASSES: ClassDef[] = [
     energy: 3,
     gold: 99,
     deck: [
-      { id: 'strike', count: 3 },
-      { id: 'defend', count: 4 },
+      { id: 'strike', count: 2 },
+      { id: 'defend', count: 3 },
       { id: 'bandage', count: 1 },
       { id: 'planning', count: 1 },
       { id: 'healing_light', count: 1 },
+      { id: 'steppe_wind', count: 1 },
+      { id: 'ghostly_armor', count: 1 },
     ],
   },
 ];

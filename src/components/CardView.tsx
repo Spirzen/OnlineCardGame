@@ -9,7 +9,20 @@ interface CardProps {
   playable?: boolean;
   selected?: boolean;
   variant?: 'hand' | 'combat' | 'reward' | 'shop';
+  hotkey?: number;
   onClick?: () => void;
+}
+
+function getCombatHint(card: CardModel): string | null {
+  const parts: string[] = [];
+  if (card.type === 'attack' && card.value > 0) parts.push(`⚔ ${card.value}`);
+  if (card.type === 'block' && card.value > 0) parts.push(`🛡 ${card.value}`);
+  if (card.block) parts.push(`+${card.block} 🛡`);
+  if (card.draw) parts.push(`+${card.draw} 🃏`);
+  if (card.aoe) parts.push('AOE');
+  if (card.lifesteal) parts.push('🩸');
+  if (card.effect) parts.push(card.effect);
+  return parts.length ? parts.join(' · ') : null;
 }
 
 export function getCardDetailText(card: CardModel): string {
@@ -57,16 +70,20 @@ export function CardView({
   playable = true,
   selected,
   variant = 'hand',
+  hotkey,
   onClick,
 }: CardProps) {
   const accent = CARD_TYPE_COLORS[card.type] ?? '#888';
   const showValue = ['attack', 'block', 'creature'].includes(card.type) && card.value > 0;
   const isCombatHand = variant === 'combat';
   const isHandLike = variant === 'hand' || isCombatHand;
+  const isPickCard = variant === 'reward' || variant === 'shop';
+  const combatHint = isCombatHand ? getCombatHint(card) : null;
 
   const classes = [
     'card',
     variant === 'reward' || variant === 'shop' ? `card--${variant}` : '',
+    isPickCard ? 'card--pick' : '',
     isCombatHand ? 'card--combat-hand' : '',
     playable && isHandLike ? 'card--playable' : '',
     selected ? 'card--selected' : '',
@@ -86,12 +103,16 @@ export function CardView({
       onKeyDown={(e) => e.key === 'Enter' && onClick?.()}
     >
       <div className="card__inner">
+        {hotkey !== undefined && playable && (
+          <span className="card__hotkey">{hotkey}</span>
+        )}
         <span className="card__cost">{card.cost}</span>
         <span className="card__type-badge">{getTypeLabel(card.type)}</span>
         <div className="card__art">{getCardArt(card.id, card.type)}</div>
         {showValue && <span className="card__value">{card.value}</span>}
         <div className="card__body">
           <div className="card__name">{card.name}</div>
+          {combatHint && <div className="card__hint">{combatHint}</div>}
           {!isCombatHand && <div className="card__desc">{card.description}</div>}
         </div>
       </div>

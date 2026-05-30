@@ -26,7 +26,7 @@ export function FxProvider({ children }: { children: ReactNode }) {
   const spawn = useCallback((kind: FxPayload['kind'], opts: Partial<FxPayload> = {}) => {
     const fx: FxPayload = { id: ++fxId, kind, ...opts };
     setEffects((prev) => [...prev, fx]);
-    setTimeout(() => setEffects((prev) => prev.filter((e) => e.id !== fx.id)), 1200);
+    setTimeout(() => setEffects((prev) => prev.filter((e) => e.id !== fx.id)), 1500);
   }, []);
 
   const shake = useCallback(() => {

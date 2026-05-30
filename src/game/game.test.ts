@@ -42,3 +42,22 @@ describe('SeededRNG', () => {
     expect(seqA).toEqual(seqB);
   });
 });
+
+describe('runSave', () => {
+  it('round-trips a run state', async () => {
+    const { RunState } = await import('./runState');
+    const { serializeRun, deserializeRun } = await import('./runSave');
+    const run = new RunState();
+    run.beginRunSetup(false);
+    run.selectClass('warrior');
+    run.pickStarterRelic(0);
+    const saved = serializeRun(run);
+    expect(saved).not.toBeNull();
+    expect(saved!.screen).toBe('map');
+    const restored = deserializeRun(saved!);
+    expect(restored).not.toBeNull();
+    expect(restored!.screen).toBe('map');
+    expect(restored!.player.hp).toBe(run.player.hp);
+    expect(restored!.gameMap?.floors.length).toBe(run.gameMap?.floors.length);
+  });
+});

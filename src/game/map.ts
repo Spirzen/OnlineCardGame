@@ -29,7 +29,7 @@ export class MapNode {
 
 export class GameMap {
   static FLOORS = 15;
-  static ROWS_PER_FLOOR = 3;
+  static ROWS_PER_FLOOR = 5;
 
   act = 1;
   floors: MapNode[][] = [];
@@ -45,7 +45,7 @@ export class GameMap {
     for (let f = 0; f < GameMap.FLOORS; f++) {
       const floorNodes: MapNode[] = [];
       const numNodes =
-        f > 0 && f < GameMap.FLOORS - 1 ? 2 + rngInt(3) : 1;
+        f > 0 && f < GameMap.FLOORS - 1 ? 3 + rngInt(4) : 1;
       const rows = rngShuffle([...Array(GameMap.ROWS_PER_FLOOR).keys()])
         .slice(0, Math.min(numNodes, GameMap.ROWS_PER_FLOOR))
         .sort((a, b) => a - b);
@@ -77,7 +77,7 @@ export class GameMap {
       [NODE_REST]: 8,
       [NODE_SHOP]: 10,
       [NODE_TREASURE]: 8,
-      [NODE_EVENT]: 17,
+      [NODE_EVENT]: 28,
     };
     const types = Object.keys(weights);
     const total = types.reduce((s, t) => s + weights[t], 0);

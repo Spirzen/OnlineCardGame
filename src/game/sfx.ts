@@ -3,6 +3,12 @@ import { loadSettings, saveSettings } from './stats';
 class SfxEngine {
   private ctx: AudioContext | null = null;
   muted = loadSettings().muted;
+  private ambientNodes: { osc: OscillatorNode; gain: GainNode }[] = [];
+  private ambientInterval: ReturnType<typeof setInterval> | null = null;
+
+  ensureAudio(): AudioContext | null {
+    return this.ensureCtx();
+  }
 
   private ensureCtx(): AudioContext | null {
     if (this.muted) return null;
@@ -18,6 +24,8 @@ class SfxEngine {
   toggleMute(): boolean {
     this.muted = !this.muted;
     saveSettings({ muted: this.muted });
+    if (this.muted) this.stopAmbient();
+    else this.startAmbient();
     return this.muted;
   }
 
@@ -34,6 +42,56 @@ class SfxEngine {
     g.connect(ctx.destination);
     osc.start();
     osc.stop(ctx.currentTime + duration);
+  }
+
+  startAmbient() {
+    if (this.muted || this.ambientNodes.length > 0) return;
+    const ctx = this.ensureCtx();
+    if (!ctx) return;
+
+    const droneFreqs = [55, 82.5, 110];
+    for (const freq of droneFreqs) {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.value = 0.012;
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      this.ambientNodes.push({ osc, gain });
+    }
+
+    this.ambientInterval = setInterval(() => {
+      if (this.muted || !this.ctx) return;
+      const wind = this.ctx.createOscillator();
+      const wg = this.ctx.createGain();
+      wind.type = 'triangle';
+      wind.frequency.value = 180 + Math.random() * 60;
+      wg.gain.setValueAtTime(0, this.ctx.currentTime);
+      wg.gain.linearRampToValueAtTime(0.008, this.ctx.currentTime + 2);
+      wg.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 6);
+      wind.connect(wg);
+      wg.connect(this.ctx.destination);
+      wind.start();
+      wind.stop(this.ctx.currentTime + 6.5);
+    }, 8000);
+  }
+
+  stopAmbient() {
+    for (const { osc, gain } of this.ambientNodes) {
+      try {
+        gain.gain.exponentialRampToValueAtTime(0.001, (this.ctx?.currentTime ?? 0) + 0.5);
+        osc.stop((this.ctx?.currentTime ?? 0) + 0.6);
+      } catch {
+        /* already stopped */
+      }
+    }
+    this.ambientNodes = [];
+    if (this.ambientInterval) {
+      clearInterval(this.ambientInterval);
+      this.ambientInterval = null;
+    }
   }
 
   click() {
