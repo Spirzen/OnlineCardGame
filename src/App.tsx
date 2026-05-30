@@ -20,6 +20,7 @@ import {
 } from './components/ExtraScreens';
 import { DeckModal } from './components/DeckModal';
 import { FxOverlay } from './components/FxOverlay';
+import { SiteHeader } from './components/SiteHeader';
 
 function GameRouter() {
   const { run, tick } = useGame();
@@ -63,7 +64,10 @@ export default function App() {
         <div className="app">
           <div className="aurora" />
           <div className="stars" />
-          <GameRouter />
+          <SiteHeader />
+          <div className="app-main">
+            <GameRouter />
+          </div>
         </div>
       </FxProvider>
     </GameProvider>

@@ -1,4 +1,5 @@
 export const LOCALE = {
+  SITE_UNIVERSE_LINK: 'Вселенная IT',
   MENU_TITLE: 'Тени Шпиля',
   MENU_SUBTITLE: 'Восходи. Сражайся. Покори вершину.',
   MENU_TAGLINE: 'Эпический карточный рогалик',
