@@ -11,7 +11,7 @@ export function ClassSelectScreen() {
   const { run, dispatch } = useGame();
 
   return (
-    <div className="screen center-content">
+    <div className="screen screen--scroll center-content class-select-screen">
       <h2 className="title-display">{LOCALE.CLASS_TITLE}</h2>
       <p className="subtitle class-select-sub">{LOCALE.CLASS_SUB}</p>
       {run.isDailyRun && <p className="subtitle">{LOCALE.DAILY_SEED}: {run.runSeed}</p>}

@@ -11,6 +11,12 @@ interface TooltipProps {
 }
 
 const VIEWPORT_PAD = 12;
+const LONG_PRESS_MS = 450;
+
+function isCoarsePointer(): boolean {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+}
 
 export function Tooltip({
   content,
@@ -25,6 +31,9 @@ export function Tooltip({
     placement === 'bottom' ? 'bottom' : 'top',
   );
   const wrapRef = useRef<HTMLSpanElement>(null);
+  const touchModeRef = useRef(isCoarsePointer());
+  const longPressRef = useRef<number | null>(null);
+  const suppressClickRef = useRef(false);
 
   const resolvePlacement = useCallback(
     (rect: DOMRect): 'top' | 'bottom' => {
@@ -52,6 +61,13 @@ export function Tooltip({
     });
   }, [resolvePlacement]);
 
+  const open = useCallback(() => {
+    updatePosition();
+    setShow(true);
+  }, [updatePosition]);
+
+  const close = useCallback(() => setShow(false), []);
+
   useEffect(() => {
     if (!show || !portal) return;
     updatePosition();
@@ -64,9 +80,45 @@ export function Tooltip({
     };
   }, [show, portal, updatePosition]);
 
-  const open = () => {
-    updatePosition();
-    setShow(true);
+  useEffect(() => {
+    if (!show || !touchModeRef.current) return;
+    const onPointerDown = (e: PointerEvent) => {
+      if (wrapRef.current?.contains(e.target as Node)) return;
+      close();
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => document.removeEventListener('pointerdown', onPointerDown);
+  }, [show, close]);
+
+  const clearLongPress = () => {
+    if (longPressRef.current !== null) {
+      window.clearTimeout(longPressRef.current);
+      longPressRef.current = null;
+    }
+  };
+
+  const onTouchStart = () => {
+    if (!touchModeRef.current) return;
+    clearLongPress();
+    longPressRef.current = window.setTimeout(() => {
+      suppressClickRef.current = true;
+      open();
+    }, LONG_PRESS_MS);
+  };
+
+  const onTouchEnd = () => {
+    clearLongPress();
+  };
+
+  const onTouchMove = () => {
+    clearLongPress();
+  };
+
+  const onClickCapture = (e: React.MouseEvent) => {
+    if (!touchModeRef.current || !suppressClickRef.current) return;
+    e.preventDefault();
+    e.stopPropagation();
+    suppressClickRef.current = false;
   };
 
   const effectivePlacement = portal ? resolvedPlacement : placement === 'auto' ? 'top' : placement;
@@ -112,10 +164,15 @@ export function Tooltip({
     <span
       ref={wrapRef}
       className="tooltip-wrap"
-      onMouseEnter={open}
-      onMouseLeave={() => setShow(false)}
+      onMouseEnter={touchModeRef.current ? undefined : open}
+      onMouseLeave={touchModeRef.current ? undefined : close}
       onFocus={open}
-      onBlur={() => setShow(false)}
+      onBlur={close}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      onTouchMove={onTouchMove}
+      onTouchCancel={onTouchEnd}
+      onClickCapture={onClickCapture}
     >
       {children}
       {tooltipNode}

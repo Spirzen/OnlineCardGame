@@ -73,7 +73,7 @@ export function StoryTutorialScreen({ onComplete, onSkip }: StoryTutorialScreenP
   if (!step) return null;
 
   return (
-    <div className="screen story-tutorial-screen">
+    <div className="screen screen--scroll story-tutorial-screen">
       <div className="story-tutorial">
         <header className="story-tutorial__header">
           <h2 className="title-display story-tutorial__title">{LOCALE.STORY_TUTORIAL_TITLE}</h2>
